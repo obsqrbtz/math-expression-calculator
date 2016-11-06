@@ -4,7 +4,7 @@ float string_to_float(std::string str){
 	std::istringstream(str) >> result;
 	return result;
 }
-void calculator::fill_stacks(std::string expr){
+void expression::fill_stacks(std::string expr){
 	std::string current_operand;
 	std::string current_operator;
 	std::string current_long_operator;
@@ -48,7 +48,7 @@ void calculator::fill_stacks(std::string expr){
 		i--;
 	}
 }
-calculator::calculator(std::string expr){
+expression::expression(std::string expr){
 	str_expression = expr;
 	fill_stacks(expr);
 // Define operations and priorities
@@ -73,16 +73,16 @@ calculator::calculator(std::string expr){
 	operation[6].priority = 4;
 	operation[6].str = "^";
 }
-std::string calculator::get_str_expression(){
+std::string expression::get_str_expression(){
 	return str_expression;
 }
-std::vector<std::string> calculator::get_operators_stack(){
+std::vector<std::string> expression::get_operators_stack(){
 	return operators_stack;
 }
-std::vector<float> calculator::get_operands_stack(){
+std::vector<float> expression::get_operands_stack(){
 	return operands_stack;
 }
-float calculator::evaluate(){
+float expression::evaluate(){
 	float result = 0;
 	return result;
 }
