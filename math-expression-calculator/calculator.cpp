@@ -5,12 +5,9 @@ float string_to_float(std::string str){
 	return result;
 }
 int expression::get_operator_priority(std::string _operator){
-	if (_operator == operation[0].str) return operation[0].priority;
-	if (_operator == operation[1].str) return operation[1].priority;
-	if (_operator == operation[2].str) return operation[2].priority;
-	if (_operator == operation[3].str) return operation[3].priority;
-	if (_operator == operation[4].str) return operation[4].priority;
-	if (_operator == operation[5].str) return operation[5].priority;
+	for (int i = 0; i < 6; i++){
+		if (_operator == operation[i].str) return operation[i].priority;
+	}
 }
 void expression::fill_stacks(std::string expr){
 	std::string current_operand;
