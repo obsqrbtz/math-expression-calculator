@@ -17,8 +17,8 @@ void expression::fill_stacks(std::string expr){
 	std::string current_operator;
 	std::string current_long_operator;
 	for (int i = 0; i < expr.size(); i++){
-		if (isdigit(expr[i])){
-			while (isdigit(expr[i]) && i < expr.size()){
+		if (isdigit(expr[i]) || expr[i] == '.'){
+			while ((isdigit(expr[i]) || expr[i] == '.') && i < expr.size()){
 				current_operand.push_back(expr[i]);
 				i++;
 			}

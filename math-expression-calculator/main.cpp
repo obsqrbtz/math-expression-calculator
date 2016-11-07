@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 int main(){
-	expression pff("24-(5+654)*5");
+	expression pff("2.4-(5+65.4)*5");
 	cout << pff.get_str_expression() << endl;
 	for (int i = 0; i < pff.get_expression().size(); i++){
 		cout << pff.get_expression()[i] << " ";
