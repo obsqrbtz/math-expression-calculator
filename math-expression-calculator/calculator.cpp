@@ -60,13 +60,11 @@ void expression::fill_stacks(std::string expr){
 }
 expression::expression(std::string expr){
 	str_expression = expr;
+	expr.push_back(';');
 	fill_stacks(expr);
 // Define operations and priorities
 	operation[0].priority = -1;
 	operation[0].str = "(";
-
-	operation[1].priority = 0;
-	operation[1].str = ")";
 
 	operation[2].priority = 2;
 	operation[2].str = "+";
@@ -82,15 +80,24 @@ expression::expression(std::string expr){
 
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
-	if (get_operator_priority(operator_1) > get_operator_priority(operator_2)){
-		return false;
-	}else{
-		return true;
-	}
+	if (operators_stack.size() == 0) return false;
+	if (operands_stack.size() < 2) return false;
+	return 
+		(get_operator_priority(operator_1) >= get_operator_priority(operator_2))
+		&& get_operator_priority(operator_1) >= 0
+		&& get_operator_priority(operator_2) >= 0;
 }
-void expression::pop(std::string _operator){
-	float a = operands_stack[operands_stack.size() - 1];
-	float b = operands_stack[operands_stack.size() - 2];
+void expression::pop(){
+	float b = operands_stack.back();
+	operands_stack.pop_back();
+	float a = operands_stack.back();
+	operands_stack.pop_back();
+	if (operators_stack.back() == operation[2].str) operands_stack.push_back(a + b);
+	if (operators_stack.back() == operation[3].str) operands_stack.push_back(a - b);
+	if (operators_stack.back() == operation[4].str) operands_stack.push_back(a * b);
+	if (operators_stack.back() == operation[5].str) operands_stack.push_back(a / b);
+	value = operands_stack.back();
+	operators_stack.pop_back();
 }
 std::string expression::get_str_expression(){
 	return str_expression;
@@ -107,16 +114,30 @@ std::vector<std::string> expression::get_expression(){
 std::vector<std::string> expression::get_element_type(){
 	return element_type;
 }
-/*float expression::evaluate(){
-	float result = 0;
+float expression::evaluate(){
 	for (int i = 0; i < ar_expression.size(); i++){
 		if (element_type[i] == "operand"){
 			operands_stack.push_back(string_to_float(ar_expression[i]));
 		}
 		if (element_type[i] == "operator"){
-			
+			if (ar_expression[i] == ")"){
+				while (operators_stack.size() > 0 && operators_stack.back() != "("){
+					pop();
+				}
+				operators_stack.pop_back();
+			}
+			else{
+				if (operators_stack.size() > 0 && can_pop(ar_expression[i], operators_stack.back())){
+					while (operators_stack.size() > 0 && can_pop(ar_expression[i], operators_stack.back())){
+						pop();
+					}
+					operators_stack.push_back(ar_expression[i]);
+				}else{
+					operators_stack.push_back(ar_expression[i]);
+				}
+	
+			}
 		}
 	}
-	return result;
+	return operands_stack[0];
 }
-*/
