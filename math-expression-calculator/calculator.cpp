@@ -4,12 +4,21 @@ float string_to_float(std::string str){
 	std::istringstream(str) >> result;
 	return result;
 }
+std::string expression::get_str_expression(){
+	return str_expression;
+}
+std::vector<std::string> expression::get_expression(){
+	return vect_expression;
+}
+std::vector<std::string> expression::get_element_type(){
+	return element_type;
+}
 int expression::get_operator_priority(std::string _operator){
 	for (int i = 0; i < 6; i++){
 		if (_operator == operation[i].str) return operation[i].priority;
 	}
 }
-void expression::fill_stacks(std::string expr){
+void expression::fill_expr_vect(std::string expr){
 	std::string current_operand;
 	std::string current_operator;
 	std::string current_long_operator;
@@ -19,7 +28,7 @@ void expression::fill_stacks(std::string expr){
 				current_operand.push_back(expr[i]);
 				i++;
 			}
-			ar_expression.push_back(current_operand);
+			vect_expression.push_back(current_operand);
 			element_type.push_back("operand");
 			current_operand.clear();
 		}
@@ -30,24 +39,24 @@ void expression::fill_stacks(std::string expr){
 						current_long_operator.push_back(expr[i]);
 					}else{
 						if (current_long_operator.size() != 0){
-							ar_expression.push_back(current_long_operator);
+							vect_expression.push_back(current_long_operator);
 							element_type.push_back("operator");
 							current_long_operator.clear();
 						}
 						current_operator.clear();
 						current_operator.push_back(expr[i]);
-						ar_expression.push_back(current_operator);
+						vect_expression.push_back(current_operator);
 						element_type.push_back("operator");
 					}
 				}else{
 					if (current_long_operator.size() != 0){
-						ar_expression.push_back(current_long_operator);
+						vect_expression.push_back(current_long_operator);
 						element_type.push_back("operator");
 						current_long_operator.clear();
 					}
 					current_operator.clear();
 					current_operator.push_back(expr[i]);
-					ar_expression.push_back(current_operator);
+					vect_expression.push_back(current_operator);
 					element_type.push_back("operator");
 				}
 				i++;
@@ -61,8 +70,8 @@ void expression::fill_stacks(std::string expr){
 expression::expression(std::string expr){
 	str_expression = expr;
 	expr.push_back(';');
-	fill_stacks(expr);
-// Define operations and priorities
+	fill_expr_vect(expr);
+
 	operation[0].priority = -1;
 	operation[0].str = "(";
 
@@ -96,44 +105,28 @@ void expression::pop(){
 	if (operators_stack.back() == operation[3].str) operands_stack.push_back(a - b);
 	if (operators_stack.back() == operation[4].str) operands_stack.push_back(a * b);
 	if (operators_stack.back() == operation[5].str) operands_stack.push_back(a / b);
-	value = operands_stack.back();
 	operators_stack.pop_back();
 }
-std::string expression::get_str_expression(){
-	return str_expression;
-}
-std::vector<std::string> expression::get_operators_stack(){
-	return operators_stack;
-}
-std::vector<float> expression::get_operands_stack(){
-	return operands_stack;
-}
-std::vector<std::string> expression::get_expression(){
-	return ar_expression;
-}
-std::vector<std::string> expression::get_element_type(){
-	return element_type;
-}
 float expression::evaluate(){
-	for (int i = 0; i < ar_expression.size(); i++){
+	for (int i = 0; i < vect_expression.size(); i++){
 		if (element_type[i] == "operand"){
-			operands_stack.push_back(string_to_float(ar_expression[i]));
+			operands_stack.push_back(string_to_float(vect_expression[i]));
 		}
 		if (element_type[i] == "operator"){
-			if (ar_expression[i] == ")"){
+			if (vect_expression[i] == ")"){
 				while (operators_stack.size() > 0 && operators_stack.back() != "("){
 					pop();
 				}
 				operators_stack.pop_back();
 			}
 			else{
-				if (operators_stack.size() > 0 && can_pop(ar_expression[i], operators_stack.back())){
-					while (operators_stack.size() > 0 && can_pop(ar_expression[i], operators_stack.back())){
+				if (operators_stack.size() > 0 && can_pop(vect_expression[i], operators_stack.back())){
+					while (operators_stack.size() > 0 && can_pop(vect_expression[i], operators_stack.back())){
 						pop();
 					}
-					operators_stack.push_back(ar_expression[i]);
+					operators_stack.push_back(vect_expression[i]);
 				}else{
-					operators_stack.push_back(ar_expression[i]);
+					operators_stack.push_back(vect_expression[i]);
 				}
 	
 			}
