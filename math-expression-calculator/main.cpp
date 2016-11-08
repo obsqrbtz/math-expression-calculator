@@ -2,9 +2,11 @@
 #include <iostream>
 using namespace std;
 int main(){
-	expression pff("(4+5)-(14-8/2+2*(4-2))+10");
-	cout << pff.get_str_expression() << endl;
-	cout << pff.evaluate() << endl;
+	string input;
+	cout << "Enter expression(without spaces)" << endl;
+	cin >> input;
+	expression a(input);
+	cout << a.evaluate() << endl;
 	system("pause");
 	return 0;
 }
