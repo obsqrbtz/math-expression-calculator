@@ -67,26 +67,29 @@ void expression::fill_expr_vect(std::string expr){
 		i--;
 	}
 }
+void expression::set_priorities(){
+	operation[0].priority = -1;
+	operation[0].str = "(";
+	operation[2].priority = 2;
+	operation[2].str = "+";
+	operation[3].priority = 2;
+	operation[3].str = "-";
+	operation[4].priority = 1;
+	operation[4].str = "*";
+	operation[5].priority = 1;
+	operation[5].str = "/";
+}
+float expression::eval(std::string _operator, float a, float b){
+	if (_operator == operation[2].str) return a + b;
+	if (_operator == operation[3].str) return a - b;
+	if (_operator == operation[4].str) return a * b;
+	if (_operator == operation[5].str) return a / b;
+}
 expression::expression(std::string expr){
 	str_expression = expr;
 	expr.push_back(';');
 	fill_expr_vect(expr);
-
-	operation[0].priority = -1;
-	operation[0].str = "(";
-
-	operation[2].priority = 2;
-	operation[2].str = "+";
-
-	operation[3].priority = 2;
-	operation[3].str = "-";
-
-	operation[4].priority = 1;
-	operation[4].str = "*";
-
-	operation[5].priority = 1;
-	operation[5].str = "/";
-
+	set_priorities();
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
 	if (operators_stack.size() == 0) return false;
@@ -101,10 +104,7 @@ void expression::pop(){
 	operands_stack.pop_back();
 	float a = operands_stack.back();
 	operands_stack.pop_back();
-	if (operators_stack.back() == operation[2].str) operands_stack.push_back(a + b);
-	if (operators_stack.back() == operation[3].str) operands_stack.push_back(a - b);
-	if (operators_stack.back() == operation[4].str) operands_stack.push_back(a * b);
-	if (operators_stack.back() == operation[5].str) operands_stack.push_back(a / b);
+	operands_stack.push_back(eval(operators_stack.back(), a, b));
 	operators_stack.pop_back();
 }
 float expression::evaluate(){

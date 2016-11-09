@@ -18,6 +18,8 @@ class expression{
 		bool can_pop(std::string, std::string);
 		void pop();
 		void fill_expr_vect(std::string);
+		void set_priorities();
+		float eval(std::string, float, float);
 	public:
 		expression(std::string);
 		std::string get_str_expression();
