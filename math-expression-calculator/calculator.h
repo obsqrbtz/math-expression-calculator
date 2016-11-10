@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <cmath>
+#include <algorithm>
 #include <sstream>
 struct operations{
 	public:
