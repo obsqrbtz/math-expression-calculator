@@ -5,6 +5,7 @@
 struct operations{
 	public:
 		std::string str;
+		std::string neutral_element;
 		int priority;
 };
 class expression{
@@ -18,7 +19,8 @@ class expression{
 		bool can_pop(std::string, std::string);
 		void pop();
 		void fill_expr_vect(std::string);
-		void set_priorities();
+		void insert_neutral_elements();
+		void set_operations();
 		float eval(std::string, float, float);
 	public:
 		expression(std::string);
@@ -26,5 +28,6 @@ class expression{
 		std::vector<std::string> get_element_type();
 		std::vector<std::string> get_expression();
 		int get_operator_priority(std::string);
+		std::string get_neutral_element(std::string);
 		float evaluate();
 };

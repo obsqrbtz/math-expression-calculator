@@ -18,6 +18,31 @@ int expression::get_operator_priority(std::string _operator){
 		if (_operator == operation[i].str) return operation[i].priority;
 	}
 }
+std::string expression::get_neutral_element(std::string _operator){
+	for (int i = 1; i < 6; i++){
+		if (_operator == operation[i].str) return operation[i].neutral_element;
+	}
+}
+void expression::insert_neutral_elements(){
+	for (int i = 0; i < vect_expression.size(); i++){
+		if (i > 0){
+			if (element_type[i] == "operator" && element_type[i - 1] == "operator"){
+				std::vector<std::string> insert;
+				insert.push_back("(");
+				insert.push_back(get_neutral_element(vect_expression[i]));
+				insert.push_back(")");
+				vect_expression.insert(vect_expression.begin() + i, insert);
+				element_type.insert(element_type.begin()+i, "operand");
+			}
+		}
+		else{
+			if (element_type[i] == "operator"){
+				vect_expression.insert(vect_expression.begin() + i, get_neutral_element(vect_expression[i]));
+				element_type.insert(element_type.begin() + i, "operand");
+			}
+		}
+	}
+}
 void expression::fill_expr_vect(std::string expr){
 	std::string current_operand;
 	std::string current_operator;
@@ -67,17 +92,21 @@ void expression::fill_expr_vect(std::string expr){
 		i--;
 	}
 }
-void expression::set_priorities(){
+void expression::set_operations(){
 	operation[0].priority = -1;
 	operation[0].str = "(";
 	operation[2].priority = 2;
 	operation[2].str = "+";
+	operation[2].neutral_element = "0";
 	operation[3].priority = 2;
 	operation[3].str = "-";
+	operation[3].neutral_element = "0";
 	operation[4].priority = 1;
 	operation[4].str = "*";
+	operation[4].neutral_element = "1";
 	operation[5].priority = 1;
 	operation[5].str = "/";
+	operation[5].neutral_element = "1";
 }
 float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[2].str) return a + b;
@@ -86,10 +115,11 @@ float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[5].str) return a / b;
 }
 expression::expression(std::string expr){
+	set_operations();
 	str_expression = expr;
 	expr.push_back(';');
 	fill_expr_vect(expr);
-	set_priorities();
+	insert_neutral_elements();
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
 	if (operators_stack.size() == 0) return false;
