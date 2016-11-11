@@ -23,7 +23,15 @@ std::string expression::get_neutral_element(std::string _operator){
 		if (_operator == operation[i].str) return operation[i].neutral_element;
 	}
 }
-void expression::insert_neutral_elements(){
+void expression::unary_to_binary(){
+/*
+* This function converts unary + or - to binary by adding neutral element before operator.
+* Supported expressions: 
+*-a + b = 0 - a + b
+* a+(-b) = a + (0 - b)
+* a+(-b + c) = a + (0 - b + c)
+* Not supported: a - - b, a - - - b, etc.
+*/
 	for (int i = 0; i < vect_expression.size(); i++){
 		if (i > 0){
 			if (element_type[i] == "operator" && vect_expression[i - 1] == "("){
@@ -138,7 +146,7 @@ expression::expression(std::string expr){
 	}
 	expr.push_back(';');
 	fill_expr_vect(expr);
-	insert_neutral_elements();
+	unary_to_binary();
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
 	if (operators_stack.size() == 0) return false;

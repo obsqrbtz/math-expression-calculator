@@ -21,7 +21,7 @@ class expression{
 		bool can_pop(std::string, std::string);
 		void pop();
 		void fill_expr_vect(std::string);
-		void insert_neutral_elements();
+		void unary_to_binary();
 		void set_operations();
 		float eval(std::string, float, float);
 	public:
