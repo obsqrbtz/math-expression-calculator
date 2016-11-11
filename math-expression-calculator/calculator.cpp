@@ -102,7 +102,7 @@ void expression::set_operations(){
 	operation[5].str = "/";
 	operation[6].priority = 0;
 	operation[6].str = "^";
-	operation[7].priority = 1;
+/*	operation[7].priority = 1;
 	operation[7].str = "sin";
 	operation[7].neutral_element = "1";
 	operation[8].priority = 1;
@@ -111,6 +111,7 @@ void expression::set_operations(){
 	operation[9].priority = 1;
 	operation[9].str = "ln";
 	operation[9].neutral_element = "1";
+*/
 }
 float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[2].str) return a + b;
@@ -118,27 +119,25 @@ float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[4].str) return a * b;
 	if (_operator == operation[5].str) return a / b;
 	if (_operator == operation[6].str) return pow(a,b);
-	/*if (_operator == operation[7].str) return sin(b);
+/*	if (_operator == operation[7].str) return sin(b);
 	if (_operator == operation[8].str) return cos(b);
 	if (_operator == operation[9].str) return log(b);
-	*/
+*/
 }
 expression::expression(std::string expr){
 	set_operations();
 	str_expression = expr;
-	expr.push_back(';');
-	fill_expr_vect(expr);
-/********************************************************************** 
-* If expression starts with "(", it will be converted to 1*expression 
-* Do not remove this block! 
+/**********************************************************************
+* If expression starts with "(", it will be converted to 1*expression
+* Do not remove this block!
 * ...really, don't do that
 **********************************************************************/
-	if (vect_expression[0] == "("){
-		vect_expression.insert(vect_expression.begin(), "*");
-		vect_expression.insert(vect_expression.begin(), "1");
-		element_type.insert(element_type.begin(), "operator");
-		element_type.insert(element_type.begin(), "operand");
+	if (expr[0] == '('){
+		expr.insert(expr.begin(), '*');
+		expr.insert(expr.begin(), '1');
 	}
+	expr.push_back(';');
+	fill_expr_vect(expr);
 	insert_neutral_elements();
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
