@@ -1,4 +1,9 @@
 #include "calculator.h"
+/* 
+* TODO :
+* Fix calculation of expressions with multiple brackets.
+* Ex: ln((-2)^2+e); ((4+3^4)*9-56)...
+*/
 float string_to_float(std::string str){
 	float result;
 	std::istringstream(str) >> result;
