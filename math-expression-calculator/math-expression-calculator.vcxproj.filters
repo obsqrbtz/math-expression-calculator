@@ -21,9 +21,15 @@
     <ClCompile Include="calculator.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="console_window.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="calculator.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="console_window.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

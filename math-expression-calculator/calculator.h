@@ -1,4 +1,6 @@
 #pragma once
+#define _USE_MATH_DEFINES
+#define OPERATIONS 11
 #include <string>
 #include <vector>
 #include <cmath>
@@ -15,7 +17,7 @@ class expression{
 		std::string str_expression;
 		std::vector<std::string> vect_expression;
 		std::vector<std::string> element_type;
-		operations operation[10];
+		operations operation[OPERATIONS];
 		std::vector<float> operands_stack;
 		std::vector<std::string> operators_stack;
 		bool can_pop(std::string, std::string);

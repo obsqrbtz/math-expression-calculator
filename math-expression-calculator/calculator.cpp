@@ -14,12 +14,12 @@ std::vector<std::string> expression::get_element_type(){
 	return element_type;
 }
 int expression::get_operator_priority(std::string _operator){
-	for (int i = 0; i < 9; i++){
+	for (int i = 0; i < OPERATIONS; i++){
 		if (_operator == operation[i].str) return operation[i].priority;
 	}
 }
 std::string expression::get_neutral_element(std::string _operator){
-	for (int i = 1; i < 9; i++){
+	for (int i = 1; i < OPERATIONS; i++){
 		if (_operator == operation[i].str) return operation[i].neutral_element;
 	}
 }
@@ -110,7 +110,7 @@ void expression::set_operations(){
 	operation[5].str = "/";
 	operation[6].priority = 0;
 	operation[6].str = "^";
-/*	operation[7].priority = 1;
+	operation[7].priority = 1;
 	operation[7].str = "sin";
 	operation[7].neutral_element = "1";
 	operation[8].priority = 1;
@@ -119,7 +119,10 @@ void expression::set_operations(){
 	operation[9].priority = 1;
 	operation[9].str = "ln";
 	operation[9].neutral_element = "1";
-*/
+	operation[10].priority = 1;
+	operation[10].str = "exp";
+	operation[10].neutral_element = "1";
+
 }
 float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[2].str) return a + b;
@@ -127,10 +130,10 @@ float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[4].str) return a * b;
 	if (_operator == operation[5].str) return a / b;
 	if (_operator == operation[6].str) return pow(a,b);
-/*	if (_operator == operation[7].str) return sin(b);
+	if (_operator == operation[7].str) return sin(b);
 	if (_operator == operation[8].str) return cos(b);
 	if (_operator == operation[9].str) return log(b);
-*/
+	if (_operator == operation[10].str) return pow(M_E, b);
 }
 expression::expression(std::string expr){
 	set_operations();
@@ -146,6 +149,13 @@ expression::expression(std::string expr){
 	}
 	expr.push_back(';');
 	fill_expr_vect(expr);
+	for (int i = 0; i < vect_expression.size(); i++){
+		if (vect_expression[i] == "e" || vect_expression[i] == "pi"){
+			if (vect_expression[i] == "e") vect_expression[i] = "2.71828182845904523536";
+			if (vect_expression[i] == "pi") vect_expression[i] = "3.14159265358979323846";
+			element_type[i] = "operand";
+		}
+	}
 	unary_to_binary();
 }
 bool expression::can_pop(std::string operator_1, std::string operator_2){
