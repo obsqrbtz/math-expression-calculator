@@ -10,7 +10,7 @@
 	-pi
 	-e
 ## Usage
-**Add to project**  
+**Add to project**:  
 Just put `calculator.cpp` and `calculator.h` in project dir and include `calculator.h`
 ```c++
 	#include "calculator.h"
