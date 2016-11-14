@@ -24,14 +24,14 @@ std::string expression::get_neutral_element(std::string _operator){
 	}
 }
 void expression::unary_to_binary(){
-/*
-* This function converts unary + or - to binary by adding neutral element before operator.
-* Supported expressions: 
-*-a + b = 0 - a + b
-* a+(-b) = a + (0 - b)
-* a+(-b + c) = a + (0 - b + c)
-* Not supported: a - - b, a - - - b, etc.
-*/
+	/*
+	* This function converts unary + or - to binary by adding neutral element before operator.
+	* Supported expressions:
+	*-a + b = 0 - a + b
+	* a+(-b) = a + (0 - b)
+	* a+(-b + c) = a + (0 - b + c)
+	* Not supported: a - - b, a - - - b, etc.
+	*/
 	for (int i = 0; i < vect_expression.size(); i++){
 		if (i > 0){
 			if (element_type[i] == "operator" && vect_expression[i - 1] == "("){
@@ -60,12 +60,14 @@ void expression::fill_expr_vect(std::string expr){
 			vect_expression.push_back(current_operand);
 			element_type.push_back("operand");
 			current_operand.clear();
-		}else{
+		}
+		else{
 			while (!isdigit(expr[i]) && i < expr.size()){
 				if (expr[i] != '(' || expr[i] != ')'){
 					if (isalpha(expr[i])){
 						current_long_operator.push_back(expr[i]);
-					}else{
+					}
+					else{
 						if (current_long_operator.size() != 0){
 							vect_expression.push_back(current_long_operator);
 							element_type.push_back("operator");
@@ -76,7 +78,8 @@ void expression::fill_expr_vect(std::string expr){
 						vect_expression.push_back(current_operator);
 						element_type.push_back("operator");
 					}
-				}else{
+				}
+				else{
 					if (current_long_operator.size() != 0){
 						vect_expression.push_back(current_long_operator);
 						element_type.push_back("operator");
@@ -129,7 +132,7 @@ float expression::eval(std::string _operator, float a, float b){
 	if (_operator == operation[3].str) return a - b;
 	if (_operator == operation[4].str) return a * b;
 	if (_operator == operation[5].str) return a / b;
-	if (_operator == operation[6].str) return pow(a,b);
+	if (_operator == operation[6].str) return pow(a, b);
 	if (_operator == operation[7].str) return sin(b);
 	if (_operator == operation[8].str) return cos(b);
 	if (_operator == operation[9].str) return log(b);
@@ -138,14 +141,21 @@ float expression::eval(std::string _operator, float a, float b){
 expression::expression(std::string expr){
 	set_operations();
 	str_expression = expr;
-/**********************************************************************
-* If expression starts with "(", it will be converted to 1*expression
-* Do not remove this block!
-* ...really, don't do that
-**********************************************************************/
+	/**********************************************************************
+	* If expression starts with "(", it will be converted to "1*expression".
+	* If it has multiple brackets, "1*" will be inserted between brackets.
+	* Do not remove this block!
+	* ...really, don't do that
+	**********************************************************************/
 	if (expr[0] == '('){
 		expr.insert(expr.begin(), '*');
 		expr.insert(expr.begin(), '1');
+	}
+	for (int i = 1; i < expr.size(); i++){
+		if (expr[i] == '(' && expr[i - 1] == '('){
+			expr.insert(expr.begin() + i, '*');
+			expr.insert(expr.begin() + i, '1');
+		}
 	}
 	expr.push_back(';');
 	fill_expr_vect(expr);
@@ -161,7 +171,7 @@ expression::expression(std::string expr){
 bool expression::can_pop(std::string operator_1, std::string operator_2){
 	if (operators_stack.size() == 0) return false;
 	if (operands_stack.size() < 2) return false;
-	return 
+	return
 		(get_operator_priority(operator_1) >= get_operator_priority(operator_2))
 		&& get_operator_priority(operator_1) >= 0
 		&& get_operator_priority(operator_2) >= 0;
@@ -194,10 +204,11 @@ float expression::evaluate(){
 						pop();
 					}
 					operators_stack.push_back(vect_expression[i]);
-				}else{
+				}
+				else{
 					operators_stack.push_back(vect_expression[i]);
 				}
-	
+
 			}
 		}
 	}
