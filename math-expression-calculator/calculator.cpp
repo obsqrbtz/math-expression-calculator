@@ -1,9 +1,4 @@
 #include "calculator.h"
-/* 
-* TODO :
-* Fix calculation of expressions with multiple brackets.
-* Ex: ln((-2)^2+e); ((4+3^4)*9-56)...
-*/
 float string_to_float(std::string str){
 	float result;
 	std::istringstream(str) >> result;
@@ -144,13 +139,20 @@ expression::expression(std::string expr){
 	set_operations();
 	str_expression = expr;
 /**********************************************************************
-* If expression starts with "(", it will be converted to 1*expression
+* If expression starts with "(", it will be converted to "1*expression".
+* If it has multiple brackets, "1*" will be inserted between brackets.
 * Do not remove this block!
 * ...really, don't do that
 **********************************************************************/
 	if (expr[0] == '('){
 		expr.insert(expr.begin(), '*');
 		expr.insert(expr.begin(), '1');
+	}
+	for (int i = 1; i < expr.size(); i++){
+		if (expr[i] == '(' && expr[i-1] == '('){
+			expr.insert(expr.begin()+i, '*');
+			expr.insert(expr.begin()+i, '1');
+		}
 	}
 	expr.push_back(';');
 	fill_expr_vect(expr);
