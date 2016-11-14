@@ -43,5 +43,3 @@ Just put `calculator.cpp` and `calculator.h` in project dir and include `calcula
 ## Notes
 Expressions should be passed to constructor without spaces.  
 Expressions like a--b, a+-b, ---b are invalid
-## TODO
-Fix calculation of expressions with multiple brackets.
