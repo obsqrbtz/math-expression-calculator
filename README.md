@@ -10,7 +10,7 @@
 	-pi
 	-e
 ## Usage
-**Add to project**  
+**Add to project**:  
 Just put `calculator.cpp` and `calculator.h` in project dir and include `calculator.h`
 ```c++
 	#include "calculator.h"
@@ -19,11 +19,11 @@ Just put `calculator.cpp` and `calculator.h` in project dir and include `calcula
 ```c++
 	expression name(string expression);
 ```
-**Calculating expression:**
+**Calculate expression:**
 ```c++
 	name.evaluate();
 ```
-**Getting source string:**
+**Get source string:**
 ```c++
 	name.get_str_expression();
 ```
