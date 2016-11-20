@@ -11,7 +11,7 @@
 	-e
 ## Usage
 **Add to project**:  
-Just put `calculator.cpp` and `calculator.h` in project dir and include `calculator.h`
+Just add `calculator.cpp` and `calculator.h` to project and include `calculator.h`
 ```c++
 	#include "calculator.h"
 ```
